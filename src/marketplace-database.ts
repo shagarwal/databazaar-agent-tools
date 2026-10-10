@@ -1,4 +1,5 @@
-// Shared response types from the published databazaar-agent-tools@0.1.0 artifact.
+import type { DatasetDocumentation } from "./marketplace-documentation.js";
+
 type AccountType = 'seller' | 'operator' | 'both';
 type PricingType = 'buy_it_now' | 'auction' | 'hybrid' | 'free';
 type DatasetStatus = 'draft' | 'active' | 'sold' | 'expired' | 'cancelled' | 'pending_scan' | 'flagged' | 'pending_verification';
@@ -34,6 +35,7 @@ interface DataSchema {
         start: string;
         end: string;
     };
+    long_description?: string;
     geographic_coverage?: Record<string, string>;
     update_frequency?: string;
 }
@@ -62,6 +64,12 @@ interface AuctionConfig {
     bid_count: number;
 }
 interface Dataset {
+    data_version?: number;
+    data_updated_at?: string | null;
+    documentation?: DatasetDocumentation;
+    license?: string | null;
+    listing_terms_version?: string | null;
+    listing_terms_accepted_at?: string | null;
     id: string;
     seller_id: string | null;
     title: string;
@@ -103,6 +111,5 @@ interface Purchase {
     escrow_release_at: string;
     created_at: string;
 }
-
 
 export type { Dataset, User, PricingType, Purchase };

@@ -19,5 +19,5 @@ jobs:
       - run: npm run build
       - name: Match the published npm release
         run: |
-          npm pack databazaar-agent-tools@0.1.0 --ignore-scripts --pack-destination "$RUNNER_TEMP"
-          python3 scripts/verify-published.py "$RUNNER_TEMP/databazaar-agent-tools-0.1.0.tgz"
+          npm pack databazaar-agent-tools@0.1.1 --ignore-scripts --pack-destination "$RUNNER_TEMP"
+          python3 scripts/verify-published.py "$RUNNER_TEMP/databazaar-agent-tools-0.1.1.tgz"
