@@ -171,14 +171,14 @@ For MCP clients, use [databazaar-mcp](https://www.npmjs.com/package/databazaar-m
 
 ## Public source
 
-This repository contains the client source for `databazaar-agent-tools@0.1.0`, with implementation recovered from its published source maps, entry-point exports and tests from the corresponding release commit, and the same public response types bundled in that release. The standalone build needs no private workspace packages. The marketplace API is developed separately.
+This repository contains the client source for `databazaar-agent-tools@0.1.1`, with implementation recovered from its published source maps, entry-point exports and tests from the corresponding release commit, and the same public response types bundled in that release. The standalone build needs no private workspace packages. The marketplace API is developed separately.
 
-The 0.1.0 npm metadata still names the private development repository; use [this repository](https://github.com/shagarwal/databazaar-agent-tools) for client source and [issues](https://github.com/shagarwal/databazaar-agent-tools/issues). Installing the package from npm remains the supported consumer path.
+The npm package links to [this public repository](https://github.com/shagarwal/databazaar-agent-tools) for client source and [issues](https://github.com/shagarwal/databazaar-agent-tools/issues). Installing the package from npm remains the supported consumer path.
 
 CI compares every generated JavaScript file, source map, and declaration against
-the published 0.1.0 tarball. To run the same check locally after building:
+the published 0.1.1 tarball. To run the same check locally after building:
 
 ```bash
-npm pack databazaar-agent-tools@0.1.0 --ignore-scripts
-python3 scripts/verify-published.py databazaar-agent-tools-0.1.0.tgz
+npm pack databazaar-agent-tools@0.1.1 --ignore-scripts
+python3 scripts/verify-published.py databazaar-agent-tools-0.1.1.tgz
 ```

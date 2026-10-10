@@ -1,6 +1,6 @@
 {
   "name": "databazaar-agent-tools",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "DataBazaar tools for agent frameworks \u2014 typed REST client plus Vercel AI SDK and LangChain.js adapters. Thin wrapper over api.databazaar.io.",
   "keywords": [
     "databazaar",

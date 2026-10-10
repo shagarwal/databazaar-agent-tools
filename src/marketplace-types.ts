@@ -22,6 +22,5 @@ interface SearchDatasetsResponse {
     offset: number;
 }
 
-
 export type { PublicDataset, SearchDatasetsQuery, SearchDatasetsResponse };
 export type { Purchase } from "./marketplace-database.js";
