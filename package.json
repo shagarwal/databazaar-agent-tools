@@ -1,0 +1,86 @@
+{
+  "name": "databazaar-agent-tools",
+  "version": "0.1.0",
+  "description": "DataBazaar tools for agent frameworks \u2014 typed REST client plus Vercel AI SDK and LangChain.js adapters. Thin wrapper over api.databazaar.io.",
+  "keywords": [
+    "databazaar",
+    "agent",
+    "tools",
+    "ai-sdk",
+    "langchain",
+    "datasets",
+    "marketplace",
+    "data"
+  ],
+  "homepage": "https://databazaar.io/integrations",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shagarwal/databazaar-agent-tools.git"
+  },
+  "license": "MIT",
+  "author": "DataBazaar",
+  "engines": {
+    "node": ">=22"
+  },
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./ai-sdk": {
+      "types": "./dist/ai-sdk.d.ts",
+      "import": "./dist/ai-sdk.js"
+    },
+    "./langchain": {
+      "types": "./dist/langchain.d.ts",
+      "import": "./dist/langchain.js"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "bin/check.mjs"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "prepack": "npm run build"
+  },
+  "dependencies": {
+    "zod": "^3.25.76"
+  },
+  "peerDependencies": {
+    "@langchain/core": "^1.2.17",
+    "ai": "^7.0.137"
+  },
+  "peerDependenciesMeta": {
+    "@langchain/core": {
+      "optional": true
+    },
+    "ai": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@langchain/core": "1.2.17",
+    "@types/node": "^20.19.43",
+    "ai": "7.0.137",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.11"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "databazaar-agent-tools": "./bin/check.mjs"
+  },
+  "bugs": {
+    "url": "https://github.com/shagarwal/databazaar-agent-tools/issues"
+  }
+}
