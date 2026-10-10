@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-10-10T23:41:46.053765+00:00",
+  "n8n_version": "2.42.6",
+  "execution": "success",
+  "dataset_id": "24cf80b3-5f47-4da6-a6a5-0540b3688343",
+  "data_version": 2,
+  "rows": 900,
+  "columns": [
+    "problem",
+    "problem_category",
+    "answer",
+    "answer_type"
+  ],
+  "output_file": "deepsearchqa.csv",
+  "output_bytes": 354209,
+  "output_sha256": "6147fd4a211cce8facf264d9a2c5c9419ddd63392493f24596aac0bbec6fb5d6",
+  "publisher_source": "https://huggingface.co/datasets/google/deepsearchqa/resolve/main/DSQA-full.csv",
+  "publisher_source_sha256": "25d48dcf7efa872e5467032e8b8eedf38d301f59a252d0da95cda584baa78396",
+  "all_cells_and_row_order_match_publisher": true,
+  "literal_None_answers_preserved": 4,
+  "account": "Dedicated test account excluded from marketplace participation; temporary API key revoked after execution",
+  "purchases": 0,
+  "model_calls": 0,
+  "limitations": "Verifies this dataset and n8n version at the recorded time; does not establish model evaluation quality or future availability."
+}

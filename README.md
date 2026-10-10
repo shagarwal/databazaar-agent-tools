@@ -98,6 +98,12 @@ Signed storage URLs carry temporary access; API file and manifest URLs need acco
 `getDownloadUrl` may return `manifest_url` instead of `download_url` for federated data.
 Use a dataset ID for free data and a purchase ID for paid data. Keep access URLs private.
 
+## n8n workflow
+
+For a visual automation workflow, use the [n8n DeepSearchQA CSV export](examples/n8n/).
+It uses built-in nodes and an account credential to retrieve actual rows, with no
+model call or purchase.
+
 ## Find work for seller agents
 
 ```js

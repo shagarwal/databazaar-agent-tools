@@ -1,0 +1,196 @@
+{
+  "name": "Export DeepSearchQA from DataBazaar to CSV",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "f456a6f7-ee90-42aa-90c7-f6afd8355126",
+      "name": "Run export",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://api.databazaar.io/datasets/24cf80b3-5f47-4da6-a6a5-0540b3688343",
+        "options": {
+          "timeout": 20000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "json"
+            }
+          }
+        }
+      },
+      "id": "42eb085b-ad8c-44ee-ad5f-b9080260175e",
+      "name": "Read public listing",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $input.first().json;\nif (d.id !== '24cf80b3-5f47-4da6-a6a5-0540b3688343' || d.status !== 'active' || d.pricing_type !== 'free') {\n  throw new Error('The selected listing is unavailable or no longer free. Inspect it before continuing.');\n}\nconst count = d.schema?.row_count;\nif (!Number.isInteger(count) || count < 1 || count > 1000) {\n  throw new Error('The declared row count is outside this bounded export. Inspect the listing.');\n}\nreturn [{ json: { declared_rows: count, dataset_id: d.id } }];"
+      },
+      "id": "a06fbae9-8cec-4e9b-8a59-a05c35eb3587",
+      "name": "Check free listing",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        440,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.databazaar.io/datasets/24cf80b3-5f47-4da6-a6a5-0540b3688343/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"select\": [\"problem\", \"problem_category\", \"answer\", \"answer_type\"], \"limit\": 1000}",
+        "options": {
+          "timeout": 120000,
+          "redirect": {
+            "redirect": {
+              "followRedirects": false
+            }
+          },
+          "response": {
+            "response": {
+              "responseFormat": "text",
+              "outputPropertyName": "data"
+            }
+          }
+        }
+      },
+      "id": "c4bb167b-5e9d-44bc-81ca-473e0086c4ae",
+      "name": "Retrieve benchmark rows",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.first().json.data;\nif (typeof text !== 'string' || text.length > 2000000) throw new Error('Expected a bounded NDJSON response.');\nconst lines = text.trim().split(/\\r?\\n/).filter(Boolean);\nconst expected = $('Check free listing').first().json.declared_rows;\nif (lines.length !== expected) throw new Error(`Received ${lines.length} rows; listing declares ${expected}. Inspect for truncation or source changes.`);\nconst fields = ['problem', 'problem_category', 'answer', 'answer_type'];\nreturn lines.map((line, i) => {\n  const row = JSON.parse(line);\n  if (!row || fields.some(f => typeof row[f] !== 'string')) throw new Error(`Unexpected schema at row ${i + 1}.`);\n  return { json: Object.fromEntries(fields.map(f => [f, row[f]])) };\n});"
+      },
+      "id": "3162f745-79a7-4ddd-84db-d09bc4f75794",
+      "name": "Validate NDJSON rows",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "csv",
+        "options": {
+          "fileName": "deepsearchqa.csv",
+          "headerRow": true
+        }
+      },
+      "id": "4ca11926-c805-4612-a0f8-c077213321fc",
+      "name": "Create CSV file",
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1100,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## DeepSearchQA \u2192 CSV\n1. Inspect https://databazaar.io/d/4k and the original Google dataset card.\n2. Create a DataBazaar account and API key at /operator/keys.\n3. In Retrieve benchmark rows, create/select a Header Auth credential: Name = Authorization, Value = Bearer YOUR_KEY. Never put the key in this workflow JSON.\n4. Execute manually. Download data from Create CSV file.\n\nNo purchases, uploads, model calls or scheduled triggers. At most 1,000 rows; stops if the listing is no longer free or the result differs from its declared row count.\n\nSource: https://huggingface.co/datasets/google/deepsearchqa (Apache-2.0). Keep answers out of agent prompts; use the publisher evaluation protocol. This exports data, it does not score a model.",
+        "height": 440,
+        "width": 760
+      },
+      "id": "1f252ed9-0f93-4273-b25e-034013fe141f",
+      "name": "Setup and scope",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        220,
+        240
+      ]
+    }
+  ],
+  "connections": {
+    "Run export": {
+      "main": [
+        [
+          {
+            "node": "Read public listing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read public listing": {
+      "main": [
+        [
+          {
+            "node": "Check free listing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check free listing": {
+      "main": [
+        [
+          {
+            "node": "Retrieve benchmark rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Retrieve benchmark rows": {
+      "main": [
+        [
+          {
+            "node": "Validate NDJSON rows",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate NDJSON rows": {
+      "main": [
+        [
+          {
+            "node": "Create CSV file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "active": false,
+  "pinData": {},
+  "tags": []
+}
