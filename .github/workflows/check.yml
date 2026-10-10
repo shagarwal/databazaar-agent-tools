@@ -16,6 +16,8 @@ jobs:
           cache: npm
       - run: npm ci --ignore-scripts
       - run: npm test
+      - name: Validate n8n export guards
+        run: node examples/n8n/verify-workflow.mjs
       - run: npm run build
       - name: Match the published npm release
         run: |
