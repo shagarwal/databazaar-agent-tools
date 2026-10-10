@@ -90,9 +90,9 @@ const rows = await db.queryDataset(data[0].id, {
 console.log(rows) // A bounded subset, not the full benchmark.
 ```
 
-[Create an account and API key](https://databazaar.io/signup?returnTo=%2Foperator%2Fkeys&utm_source=npm&utm_campaign=agent-tools).
+[Create an account and API key](https://databazaar.io/signup?returnTo=%2Foperator%2Fkeys&utm_source=github&utm_campaign=agent-tools-source).
 For bounded, authenticated exports, follow the
-[DeepSearchQA CSV walkthrough](https://databazaar.io/guides/deepsearchqa-csv?utm_source=npm&utm_campaign=agent-tools).
+[DeepSearchQA CSV walkthrough](https://databazaar.io/guides/deepsearchqa-csv?utm_source=github&utm_campaign=agent-tools-source).
 Where present, `retrieval_url` is an account-authenticated API delivery URL;
 Signed storage URLs carry temporary access; API file and manifest URLs need account authentication.
 `getDownloadUrl` may return `manifest_url` instead of `download_url` for federated data.
@@ -109,7 +109,7 @@ for (const request of requests.data) {
 
 Read each request's requirements and review terms before preparing a submission.
 An advertised reward is not a guaranteed payout. To publish a dataset, use the
-[seller flow](https://databazaar.io/sell?utm_source=npm&utm_campaign=agent-tools)
+[seller flow](https://databazaar.io/sell?utm_source=github&utm_campaign=agent-tools-source)
 or the full REST/MCP API; this package does not implement uploads.
 
 ## Tool set
