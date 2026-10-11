@@ -1,5 +1,5 @@
 {
-  "name": "Export DeepSearchQA from DataBazaar to CSV",
+  "name": "Export DeepSearchQA from DataBazaar to CSV with HTTP Request",
   "nodes": [
     {
       "parameters": {},
@@ -116,17 +116,50 @@
     },
     {
       "parameters": {
-        "content": "## DeepSearchQA \u2192 CSV\n1. Inspect https://databazaar.io/d/4k and the original Google dataset card.\n2. Create a DataBazaar account and API key at /operator/keys.\n3. In Retrieve benchmark rows, create/select a Header Auth credential: Name = Authorization, Value = Bearer YOUR_KEY. Never put the key in this workflow JSON.\n4. Execute manually. Download data from Create CSV file.\n\nNo purchases, uploads, model calls or scheduled triggers. At most 1,000 rows; stops if the listing is no longer free or the result differs from its declared row count.\n\nSource: https://huggingface.co/datasets/google/deepsearchqa (Apache-2.0). Keep answers out of agent prompts; use the publisher evaluation protocol. This exports data, it does not score a model.",
-        "height": 440,
-        "width": 760
+        "content": "## Export DeepSearchQA from DataBazaar to CSV with HTTP Request\n\nFor agent builders preparing evaluation inputs from Google\u2019s DeepSearchQA benchmark. This independent DataBazaar example produces a CSV with problem, problem_category, answer and answer_type. It prepares data; it does not run or score a model.\n\n### How it works\nHTTP Request reads the public listing. A Code node verifies the dataset ID, free status and declared row count. A second HTTP Request retrieves up to 1,000 rows using your DataBazaar credential. Another Code node validates the NDJSON and expected fields before Convert to File creates deepsearchqa.csv.\n\nTested with n8n 2.42.6: all 900 rows matched Google\u2019s original CSV. Unexpected schemas, incomplete responses and listings that are no longer free stop the workflow. There are no purchases, model calls, uploads or scheduled triggers.\n\n### Setup\n1. Inspect the [listing and sample](https://databazaar.io/d/4k) and [Google\u2019s dataset card](https://huggingface.co/datasets/google/deepsearchqa).\n2. Create a DataBazaar account and an API key at Account \u2192 API Keys.\n3. In Retrieve benchmark rows, create a Header Auth credential: name Authorization; value Bearer YOUR_DATABAZAAR_API_KEY. Keep the key out of shared workflow files.\n4. Execute manually, then download the data binary output from Create CSV file.\n\nFull retrieval requires an account, including free datasets. Your n8n hosting has its own costs. [Setup and troubleshooting](https://databazaar.io/guides/deepsearchqa-csv#n8n).\n\n### Customization tips\nUse the validated rows downstream, but keep reference answers out of agent prompts. Changing only the dataset ID is insufficient for other datasets: review the guard and schema together.",
+        "color": 1,
+        "width": 570,
+        "height": 1000
       },
       "id": "1f252ed9-0f93-4273-b25e-034013fe141f",
-      "name": "Setup and scope",
+      "name": "Workflow overview and setup",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        220,
-        240
+        -670,
+        -100
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Check the listing\nRead public metadata and require this dataset to be active and free.",
+        "color": 7,
+        "width": 650,
+        "height": 300
+      },
+      "id": "85861e0d-310d-498f-a076-8081120dbe19",
+      "name": "Check dataset access",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -80
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Retrieve, validate, export\nUse your account credential, validate the complete response, then download the CSV.",
+        "color": 7,
+        "width": 710,
+        "height": 300
+      },
+      "id": "5e9fcbc3-0823-4d09-8000-ba51e6af7379",
+      "name": "Retrieve and export",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        620,
+        -80
       ]
     }
   ],
